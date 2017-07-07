@@ -1,0 +1,33 @@
+How the Stock and Flow Plant Breeding Works
+    
+    INSIGHTMAKER BASICS 
+        Stocks: Containers that hold an amount of something. (ex: bank account, bath tub)
+        Flow: The rate at which something flows in/out of stocks
+        Variable: A number or function that can be inserted into primitives.
+        Link: Connects two primitives so they can be used in accordance with each other. (link an "interest rate" variable into an "interest incoming" flow
+        Folder: Groups multiple primitives together. Useful for tidying up the Insight. Can be collapsed to save room.
+        Sliders: For people running the simulation, can adjust key values to change how the simulation runs.
+        Time Steps: The simulation moves from time A to time B in steps. Can be defined as seconds, months, years, etc.
+        Simulate: Runs the simulation and displays the desired outputs.
+    
+    FIRST GENERATION
+        Parents: The simulation starts with two types parents, both parents carry alleles A1 and A2. Each type of parent contains a certain frequency for each allele (chosen by sliders)
+        Initial Population: The "G1 Pop" (Generation 1 Population) starts in the first stock. This can be adjusted by sliders.
+        Combinations: Each offspring gets a combination of 2 alleles, one from each parent. (In this case only 4 possible combinations) 
+    
+        Offspring: From the "Parents" stock, combinations of alleles flow into new stocks named after each combination. The flow rate is based on the Population and each parent's allele frequency. The offspring flow until the "Parents" stock is empty. We have our first generation.
+        Y value: Each combination has a variable attached to it, named after the Y-value we are simulating (in this case height). It is usually based on a Normal distribution. There is also two variables attatched to the "Height" variables that allow for adjustment of the Mean/SD of the Normal distribution.
+    
+    SELECTION (will probably need further explanation)
+        The selection process is somewhat complicated due to a limitation in the built in programs.
+        First: Define the cutoff percentage.
+        Second: Create the threshold by multiplying the cutoff by the population, then rounding it.
+        Third: Pull the cutoff value. Sort all heights and select the value ranked where the threshold is.
+        Fourth: Count the heights from each combination that are above this threshold value and divide it by the threshold number (since we are only selecting that many).
+        Fifth: The percentage created by these divisions will be used as the percentage in Generation 2.
+    
+    All generations after this will be basically identical, and use the percentages created from selection rather than the Parent Allele frequencies.
+    
+    DATA COLLECTION
+        Mean Height: One variable set to average all heights in a generation for every time step (each time step represents one generation)
+        Number of each Combination: Takes the total number of each combination and tracks it from generation to generation.

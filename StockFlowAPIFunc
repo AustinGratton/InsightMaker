@@ -1,0 +1,67 @@
+Dialogues/User Input
+
+showPrompt - prompts user for input of value. Could be desired number of generations/genotypes and this could then generate the model.
+showChoice - prompts the user with text and choice of "ok" or "cancel." Could be used to initiate a tutorial or cancel it if it is a repeat user
+showData - creates display data
+openFile - prompts user to input file. Possible an input of all the phenotype distribution data?
+
+General Model Functions
+
+layoutModel - Organizes primitives according to algorithm
+
+Simulation Settings
+
+setTimeLength - set length of sim. Maybe set it equal to desired amount of generations
+getAlgorithm -gets algorithm
+setAlgorithm - can set an algorithm (could be diff by choice)
+set/getMacros - set or get macros
+
+Accessing Primitives
+
+findName - access by name
+findAll - access all
+findType - access by type
+findValue - access by matching value (match a regular expression? Not sure)
+findNote - access by matching notes (match a regular express too)
+
+Create/Delete Primitives
+
+createPrimitive
+createConnector
+removePrimitive
+
+Primitive General (set/get unless otherwise noted)
+
+Type
+Name
+Units
+Constraints - upper and lower bounds of passed primitives
+Note
+Value
+
+Primitive Styling (get/set)
+
+ShowSlider
+SliderMin
+SliderMax
+SliderStep
+FillColor
+FontColor
+LineColor
+Image
+
+Connectors
+
+set/getEnds
+connected
+
+Folders
+
+collapseFolder - collapses a folder or an array of folders
+expandFolder
+getFrozen
+setFrozen
+
+Utility
+
+setGlobal - sets value of global variable

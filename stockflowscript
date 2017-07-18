@@ -1,158 +1,5 @@
 //create parents and link population variable
 
-Parents = createPrimitive("Parents","Stock",[200,50],[100,50])
-setValue(Parents, '[G1 Pop]')
-setNonNegative(Parents,true)
-G1pop = createPrimitive("G1 Pop","Variable", [225,100],[50,50])
-setValue(G1pop, 50000)
-setShowSlider(G1pop,true)
-setSliderMax(G1pop,100000)
-setSliderStep(G1pop,1)
-createConnector("Link","Link",G1pop,Parents)
-
-//create parent alleles including flows and links
-
-for (j = 0; j < 10; j++) {
-	for (i = 0; i < 10; i++) {
-		window['G1A'+(j+1)+'A'+(i+1)] = createPrimitive("G1 A"+(j+1)+"A"+(i+1),"Stock",[350,((j+1)*50)+10*(i+1)],[50,50])
-		window['FlowA'+(j+1)+'A'+(i+1)] = createConnector("Flow G1 A"+(j+1)+"A"+(i+1),"Flow", Parents, findName("G1 A"+(j+1)+"A"+(i+1)))
-
- 	}
-}
-
-for (i = 0; i < 10; i++) {
-	window['P1A'+i+'freq'] = createPrimitive("P1 A" + (i+1), "Variable", [50, 50+(i+1)], [50,50])
-	setShowSlider(window['P1A'+i+'freq'],true)
-	setSliderMax(window['P1A'+i+'freq'],1)
-	setSliderStep(window['P1A'+i+'freq'],0.01)
-	setValue(window['P1A'+i+'freq'],.1)
-	window['P2A'+i+'freq'] = createPrimitive("P2 A" + (i+1), "Variable", [100, 50+(i+1)], [50,50])
-	setShowSlider(window['P2A'+i+'freq'],true)
-	setSliderMax(window['P2A'+i+'freq'],1)
-	setSliderStep(window['P2A'+i+'freq'],0.01)
-	setValue(window['P2A'+i+'freq'],.1)
-}
-
-for (j = 0; j < 10; j++) {
-	for (i = 0; i < 10; i++) {
-		createConnector("","Link",G1pop,window['FlowA'+(j+1)+'A'+(i+1)])
-	} 
-}
-
-
-for (j = 0; j < 10; j++) {
-	for (i = 0; i < 10; i++) {
-		createConnector("","Link",window['P1A'+j+'freq'],window['FlowA'+(j+1)+'A'+(i+1)])
-	} 
-}
-
-for (j = 0; j < 10; j++) {
-	for (i = 0; i < 10; i++) {
-		createConnector("","Link",window['P2A'+j+'freq'], window['FlowA'+(i+1)+'A'+(j+1)])
-	} 
-}
-
-
-for (j = 0; j < 10; j++) {
-	for (i = 0; i < 10; i++) {
-		setValue(window['FlowA'+(j+1)+'A'+(i+1)],'Round([G1 Pop]*[P1 A'+(j+1)+']*[P2 A'+(i+1)+'])')
-	} 
-}
-
-//create phenotype primitives for all genotypes
-
-for (i = 1; i < 11; i++) {
-	G1A1Height = createPrimitive("G1 A1A"+i+" Height","Variable",[400,50+10*i],[50,50])
-	window['HeightLinkA1A'+i] = createConnector("HeightLinkA1A"+1,"Link", findName("G1 A1A"+i), findName("G1 A1A"+i+" Height"))
-	G1A2Height = createPrimitive("G1 A2A"+i+" Height","Variable",[400,100+10*i],[50,50])
-	window['HeightLinkA2A'+i] = createConnector("HeightLinkA2A"+1,"Link", findName("G1 A2A"+i), findName("G1 A2A"+i+" Height"))
-	G1A3Height = createPrimitive("G1 A3A"+i+" Height","Variable",[400,150+10*i],[50,50])
-	window['HeightLinkA3A'+i] = createConnector("HeightLinkA3A"+1,"Link", findName("G1 A3A"+i), findName("G1 A3A"+i+" Height"))
-	G1A4Height = createPrimitive("G1 A4A"+i+" Height","Variable",[400,200+10*i],[50,50])
-	window['HeightLinkA4A'+i] = createConnector("HeightLinkA4A"+1,"Link", findName("G1 A4A"+i), findName("G1 A4A"+i+" Height"))
-	G1A5Height = createPrimitive("G1 A5A"+i+" Height","Variable",[400,250+10*i],[50,50])
-	window['HeightLinkA5A'+i] = createConnector("HeightLinkA5A"+1,"Link", findName("G1 A5A"+i), findName("G1 A5A"+i+" Height"))
-	G1A6Height = createPrimitive("G1 A6A"+i+" Height","Variable",[400,300+10*i],[50,50])
-	window['HeightLinkA6A'+i] = createConnector("HeightLinkA6A"+1,"Link", findName("G1 A6A"+i), findName("G1 A6A"+i+" Height"))
-	G1A7Height = createPrimitive("G1 A7A"+i+" Height","Variable",[400,350+10*i],[50,50])
-	window['HeightLinkA7A'+i] = createConnector("HeightLinkA7A"+1,"Link", findName("G1 A7A"+i), findName("G1 A7A"+i+" Height"))
-	G1A8Height = createPrimitive("G1 A8A"+i+" Height","Variable",[400,400+10*i],[50,50])
-	window['HeightLinkA8A'+i] = createConnector("HeightLinkA8A"+1,"Link", findName("G1 A8A"+i), findName("G1 A8A"+i+" Height"))
-	G1A9Height = createPrimitive("G1 A9A"+i+" Height","Variable",[400,450+10*i],[50,50])
-	window['HeightLinkA9A'+i] = createConnector("HeightLinkA9A"+1,"Link", findName("G1 A9A"+i), findName("G1 A9A"+i+" Height"))
-	G1A10Height = createPrimitive("G1 A10A"+i+" Height","Variable",[400,500+10*i],[50,50])
-	window['HeightLinkA10A'+i] = createConnector("HeightLinkA10A"+1,"Link", findName("G1 A10A"+i), findName("G1 A10A"+i+" Height"))
-}
-
-for (i = 1; i < 11; i++) {
-
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-	setValue(findName('G1 A1A'+i+' Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A1A'+i+' Mean],[A1A'+i+' SD]),[G1 A1A'+i+']), 0)')
-}
-
-for (i = 1; i < 11; i++) {
-	G1A1Mean = createPrimitive("G1 A1A"+i+" Mean","Variable",[450,50+10*i],[25,25])
-	window['MeanLinkA1A'+i] = createConnector("MeanLinkA1A"+1,"Link", findName("G1 A1A"+i+" Mean"), findName("G1 A1A"+i+" Height"))
-	G1A2Mean = createPrimitive("G1 A2A"+i+" Mean","Variable",[450,100+10*i],[25,25])
-	window['MeanLinkA2A'+i] = createConnector("MeanLinkA2A"+1,"Link", findName("G1 A2A"+i+" Mean"), findName("G1 A2A"+i+" Height"))
-	G1A3Mean = createPrimitive("G1 A3A"+i+" Mean","Variable",[450,150+10*i],[25,25])
-	window['MeanLinkA3A'+i] = createConnector("MeanLinkA3A"+1,"Link", findName("G1 A3A"+i+" Mean"), findName("G1 A3A"+i+" Height"))
-	G1A4Mean = createPrimitive("G1 A4A"+i+" Mean","Variable",[450,200+10*i],[25,25])
-	window['MeanLinkA4A'+i] = createConnector("MeanLinkA4A"+1,"Link", findName("G1 A4A"+i+" Mean"), findName("G1 A4A"+i+" Height"))
-	G1A5Mean = createPrimitive("G1 A5A"+i+" Mean","Variable",[450,250+10*i],[25,25])
-	window['MeanLinkA5A'+i] = createConnector("MeanLinkA5A"+1,"Link", findName("G1 A5A"+i+" Mean"), findName("G1 A5A"+i+" Height"))
-	G1A6Mean = createPrimitive("G1 A6A"+i+" Mean","Variable",[450,300+10*i],[25,25])
-	window['MeanLinkA6A'+i] = createConnector("MeanLinkA6A"+1,"Link", findName("G1 A6A"+i+" Mean"), findName("G1 A6A"+i+" Height"))
-	G1A7Mean = createPrimitive("G1 A7A"+i+" Mean","Variable",[450,350+10*i],[25,25])
-	window['MeanLinkA7A'+i] = createConnector("MeanLinkA7A"+1,"Link", findName("G1 A7A"+i+" Mean"), findName("G1 A7A"+i+" Height"))
-	G1A8Mean = createPrimitive("G1 A8A"+i+" Mean","Variable",[450,400+10*i],[25,25])
-	window['MeanLinkA8A'+i] = createConnector("MeanLinkA8A"+1,"Link", findName("G1 A8A"+i+" Mean"), findName("G1 A8A"+i+" Height"))
-	G1A9Mean = createPrimitive("G1 A9A"+i+" Mean","Variable",[450,450+10*i],[25,25])
-	window['MeanLinkA9A'+i] = createConnector("MeanLinkA9A"+1,"Link", findName("G1 A9A"+i+" Mean"), findName("G1 A9A"+i+" Height"))
-	G1A10Mean = createPrimitive("G1 A10A"+i+" Mean","Variable",[450,500+10*i],[25,25])
-	window['MeanLinkA10A'+i] = createConnector("MeanLinkA10A"+1,"Link", findName("G1 A10A"+i+" Mean"), findName("G1 A10A"+i+" Height"))
-}
-
-for (i = 1; i < 11; i++) {
-	G1A1SD = createPrimitive("G1 A1A"+i+" SD","Variable",[450,75+10*i],[25,25])
-	window['SDLinkA1A'+i] = createConnector("SDLinkA1A"+1,"Link", findName("G1 A1A"+i+" SD"), findName("G1 A1A"+i+" Height"))
-	G1A2SD = createPrimitive("G1 A2A"+i+" SD","Variable",[450,125+10*i],[25,25])
-	window['SDLinkA2A'+i] = createConnector("SDLinkA2A"+1,"Link", findName("G1 A2A"+i+" SD"), findName("G1 A2A"+i+" Height"))
-	G1A3SD = createPrimitive("G1 A3A"+i+" SD","Variable",[450,175+10*i],[25,25])
-	window['SDLinkA3A'+i] = createConnector("SDLinkA3A"+1,"Link", findName("G1 A3A"+i+" SD"), findName("G1 A3A"+i+" Height"))
-	G1A4SD = createPrimitive("G1 A4A"+i+" SD","Variable",[450,225+10*i],[25,25])
-	window['SDLinkA4A'+i] = createConnector("SDLinkA4A"+1,"Link", findName("G1 A4A"+i+" SD"), findName("G1 A4A"+i+" Height"))
-	G1A5SD = createPrimitive("G1 A5A"+i+" SD","Variable",[450,275+10*i],[25,25])
-	window['SDLinkA5A'+i] = createConnector("SDLinkA5A"+1,"Link", findName("G1 A5A"+i+" SD"), findName("G1 A5A"+i+" Height"))
-	G1A6SD = createPrimitive("G1 A6A"+i+" SD","Variable",[450,325+10*i],[25,25])
-	window['SDLinkA6A'+i] = createConnector("SDLinkA6A"+1,"Link", findName("G1 A6A"+i+" SD"), findName("G1 A6A"+i+" Height"))
-	G1A7SD = createPrimitive("G1 A7A"+i+" SD","Variable",[450,375+10*i],[25,25])
-	window['SDLinkA7A'+i] = createConnector("SDLinkA7A"+1,"Link", findName("G1 A7A"+i+" SD"), findName("G1 A7A"+i+" Height"))
-	G1A8SD = createPrimitive("G1 A8A"+i+" SD","Variable",[450,425+10*i],[25,25])
-	window['SDLinkA8A'+i] = createConnector("SDLinkA8A"+1,"Link", findName("G1 A8A"+i+" SD"), findName("G1 A8A"+i+" Height"))
-	G1A9SD = createPrimitive("G1 A9A"+i+" SD","Variable",[450,475+10*i],[25,25])
-	window['SDLinkA9A'+i] = createConnector("SDLinkA9A"+1,"Link", findName("G1 A9A"+i+" SD"), findName("G1 A9A"+i+" Height"))
-	G1A10SD = createPrimitive("G1 A10A"+i+" SD","Variable",[450,525+10*i],[25,25])
-	window['SDLinkA10A'+i] = createConnector("SDLinkA10A"+1,"Link", findName("G1 A10A"+i+" SD"), findName("G1 A10A"+i+" Height"))
-}
-
-
-
-
-
-
-7/17/2017 new lines arent working 
-
-//create parents and link population variable
-
 Parents = createPrimitive('Parents','Stock',[200,50],[100,50])
 setValue(Parents, '[G1 Pop]')
 setNonNegative(Parents,true)
@@ -216,7 +63,7 @@ for (j = 0; j < 10; j++) {
 
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
-		window['G1A'+(j+1)+'A'+(i+1)+' Height'] = createPrimitive('G1 A'+(j+1)+'A'+(i+1)+' Height','Variable',[400,(j+1)*50+10*(i+1)],[50,50])
+		window['G1A'+(j+1)+'A'+(i+1)+'Height'] = createPrimitive('G1 A'+(j+1)+'A'+(i+1)+' Height','Variable',[400,(j+1)*50+10*(i+1)],[50,50])
 	}
 }	
 	
@@ -224,13 +71,13 @@ for (j = 0; j < 10; j++) {
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
 
-		window['HeightLinkA'+(j+1)+'A'+(i+1)] = createConnector('','Link', window['G1A'+(j+1)+'A'+(i+1)], window['G1A'+(j+1)+'A'+(i+1)+' Height'])
+		window['HeightLinkA'+(j+1)+'A'+(i+1)] = createConnector('','Link', window['G1A'+(j+1)+'A'+(i+1)], window['G1A'+(j+1)+'A'+(i+1)+'Height'])
 	}
 }
 
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
-		setValue(findName('G1 A'+(j+1)+'A'+(i+1)+'Height'),'IfThenElse(Years = 1, Repeat(RandNormal([A'+(j+1)+'A'+(i+1)+' Mean],[A'+(j+1)+'A'+(i+1)+' SD]),[G1 A'+(j+1)+'A'+(i+1)+']), 0)')
+		setValue(window['G1A'+(j+1)+'A'+(i+1)+'Height'],'IfThenElse(Years = 1, Repeat(RandNormal([A'+(j+1)+'A'+(i+1)+' Mean],[A'+(j+1)+'A'+(i+1)+' SD]),[G1 A'+(j+1)+'A'+(i+1)+']), 0)')
 	}
 }
 
@@ -240,11 +87,9 @@ for (j = 0; j < 10; j++) {
 	}
 }
 
-
-/// has stopped working
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
-		window['MeanLinkA'+(j+1)+'A'+(i+1)] = createConnector('',window['G1A'+(j+1)+'A'+(i+1)+'Mean'], window['G1A'+(j+1)+'A'+(i+1)+' Height'])
+		window['MeanLinkA'+(j+1)+'A'+(i+1)] = createConnector('', 'Link', window['G1A'+(j+1)+'A'+(i+1)+'Mean'], window['G1A'+(j+1)+'A'+(i+1)+'Height'])
 	}
 }
 
@@ -255,35 +100,6 @@ for (j = 0; j < 10; j++) {
 }
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
-		window['SDLinkA'+(j+1)+'A'+(i+1)] = createConnector('', window['G1A'+(j+1)+'A'+(i+1)+'SD'], window['G1A'+(j+1)+'A'+(i+1)+' Height'])
+		window['SDLinkA'+(j+1)+'A'+(i+1)] = createConnector('','Link', window['G1A'+(j+1)+'A'+(i+1)+'SD'], window['G1A'+(j+1)+'A'+(i+1)+'Height'])
 	}
 }
-
-for (i = 1; i < 11; i++) {
-	G1A1SD = createPrimitive('G1 A1A'+(i+1)+' SD','Variable',[450,75+10*i],[25,25])
-	window['SDLinkA1A'+i] = createConnector('SDLinkA1A'+1,'Link', findName('G1 A1A'+(i+1)+' SD'), findName('G1 A1A'+(i+1)+' Height'))
-	G1A2SD = createPrimitive('G1 A2A'+(i+1)+' SD','Variable',[450,125+10*i],[25,25])
-	window['SDLinkA2A'+i] = createConnector('SDLinkA2A'+1,'Link', findName('G1 A2A'+(i+1)+' SD'), findName('G1 A2A'+(i+1)+' Height'))
-	G1A3SD = createPrimitive('G1 A3A'+(i+1)+' SD','Variable',[450,175+10*i],[25,25])
-	window['SDLinkA3A'+i] = createConnector('SDLinkA3A'+1,'Link', findName('G1 A3A'+(i+1)+' SD'), findName('G1 A3A'+(i+1)+' Height'))
-	G1A4SD = createPrimitive('G1 A4A'+(i+1)+' SD','Variable',[450,225+10*i],[25,25])
-	window['SDLinkA4A'+i] = createConnector('SDLinkA4A'+1,'Link', findName('G1 A4A'+(i+1)+' SD'), findName('G1 A4A'+(i+1)+' Height'))
-	G1A5SD = createPrimitive('G1 A5A'+(i+1)+' SD','Variable',[450,275+10*i],[25,25])
-	window['SDLinkA5A'+i] = createConnector('SDLinkA5A'+1,'Link', findName('G1 A5A'+(i+1)+' SD'), findName('G1 A5A'+(i+1)+' Height'))
-	G1A6SD = createPrimitive('G1 A6A'+(i+1)+' SD','Variable',[450,325+10*i],[25,25])
-	window['SDLinkA6A'+i] = createConnector('SDLinkA6A'+1,'Link', findName('G1 A6A'+(i+1)+' SD'), findName('G1 A6A'+(i+1)+' Height'))
-	G1A7SD = createPrimitive('G1 A7A'+(i+1)+' SD','Variable',[450,375+10*i],[25,25])
-	window['SDLinkA7A'+i] = createConnector('SDLinkA7A'+1,'Link', findName('G1 A7A'+(i+1)+' SD'), findName('G1 A7A'+(i+1)+' Height'))
-	G1A8SD = createPrimitive('G1 A8A'+(i+1)+' SD','Variable',[450,425+10*i],[25,25])
-	window['SDLinkA8A'+i] = createConnector('SDLinkA8A'+1,'Link', findName('G1 A8A'+(i+1)+' SD'), findName('G1 A8A'+(i+1)+' Height'))
-	G1A9SD = createPrimitive('G1 A9A'+(i+1)+' SD','Variable',[450,475+10*i],[25,25])
-	window['SDLinkA9A'+i] = createConnector('SDLinkA9A'+1,'Link', findName('G1 A9A'+(i+1)+' SD'), findName('G1 A9A'+(i+1)+' Height'))
-	G1A10SD = createPrimitive('G1 A10A'+(i+1)+' SD','Variable',[450,525+10*i],[25,25])
-	window['SDLinkA10A'+i] = createConnector('SDLinkA10A'+1,'Link', findName('G1 A10A'+(i+1)+' SD'), findName('G1 A10A'+(i+1)+' Height'))
-}
-
-
-
-
-
-

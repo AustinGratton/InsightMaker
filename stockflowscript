@@ -1,5 +1,7 @@
 //create parents and link population variable
 
+Gen1 = createPrimitive('Generation 1','Folder',[0,0],[750,675])
+
 Parents = createPrimitive('Parents','Stock',[200,50],[100,50])
 setValue(Parents, '[G1 Pop]')
 setNonNegative(Parents,true)
@@ -10,15 +12,18 @@ setSliderMax(G1pop,100000)
 setSliderStep(G1pop,1)
 createConnector('Link','Link',G1pop,Parents)
 
+setParent(Parents, Gen1)
+setParent(G1pop, Gen1)
+
 //create parent alleles including flows and links
 
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
 		window['G1A'+(j+1)+'A'+(i+1)] = createPrimitive('G1 A'+(j+1)+'A'+(i+1),'Stock',[350,((j+1)*50)+10*(i+1)],[50,50])
 		window['FlowA'+(j+1)+'A'+(i+1)] = createConnector('Flow G1 A'+(j+1)+'A'+(i+1),'Flow', Parents, findName('G1 A'+(j+1)+'A'+(i+1)))
-
  	}
 }
+
 
 for (i = 0; i < 10; i++) {
 	window['P1A'+(i+1)+'freq'] = createPrimitive('P1 A' + (i+1), 'Variable', [50, 50+(i+1)], [50,50])
@@ -32,6 +37,8 @@ for (i = 0; i < 10; i++) {
 	setSliderStep(window['P2A'+(i+1)+'freq'],0.01)
 	setValue(window['P2A'+(i+1)+'freq'],.1)
 }
+
+
 
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
@@ -68,6 +75,8 @@ for (j = 0; j < 10; j++) {
 }	
 	
 
+
+
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
 
@@ -75,9 +84,10 @@ for (j = 0; j < 10; j++) {
 	}
 }
 
+
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
-		setValue(window['G1A'+(j+1)+'A'+(i+1)+'Height'],'IfThenElse(Years = 1, Repeat(RandNormal([A'+(j+1)+'A'+(i+1)+' Mean],[A'+(j+1)+'A'+(i+1)+' SD]),[G1 A'+(j+1)+'A'+(i+1)+']), 0)')
+		setValue(window['G1A'+(j+1)+'A'+(i+1)+'Height'],'IfThenElse(Years = 1, Repeat(RandNormal([G1 A'+(j+1)+'A'+(i+1)+' Mean],[G1 A'+(j+1)+'A'+(i+1)+' SD]),[G1 A'+(j+1)+'A'+(i+1)+']), 0)')
 	}
 }
 
@@ -91,11 +101,13 @@ for (j = 0; j < 10; j++) {
 	}
 }
 
+
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
 		window['MeanLinkA'+(j+1)+'A'+(i+1)] = createConnector('', 'Link', window['G1A'+(j+1)+'A'+(i+1)+'Mean'], window['G1A'+(j+1)+'A'+(i+1)+'Height'])
 	}
 }
+
 
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
@@ -106,15 +118,19 @@ for (j = 0; j < 10; j++) {
 		setValue(window['G1A'+(j+1)+'A'+(i+1)+'SD'],1)
 	}
 }
+
+
 for (j = 0; j < 10; j++) {
 	for (i = 0; i < 10; i++) {
 		window['SDLinkA'+(j+1)+'A'+(i+1)] = createConnector('','Link', window['G1A'+(j+1)+'A'+(i+1)+'SD'], window['G1A'+(j+1)+'A'+(i+1)+'Height'])
 	}
 }
 
+
 G1Cutoff = createPrimitive('G1 Height Cutoff Value','Variable', [550,50], [100,50])
 G1Threshold = createPrimitive('G1 Threshold','Variable', [550,150], [100,50])
-G1CutPerc = createPrimitive('G1 Height Cutoff Value','Variable', [550,250], [100,50])
+G1CutPerc = createPrimitive('G1 Cutoff Perc','Variable', [550,250], [100,50])
+
 
 
 var AllHeight = [];
@@ -147,8 +163,227 @@ for (j = 0; j < 10; j++) {
 		window['G2A'+(j+1)+'A'+(i+1)+'Perc'] = createPrimitive('G2 A'+(j+1)+'A'+(i+1)+' Perc','Variable',[650,(j+1)*50+10*(i+1)],[50,50])
 		setValue(window['G2A'+(j+1)+'A'+(i+1)+'Perc'],'IfThenElse(Years=1,[G1 A'+(j+1)+'A'+(i+1)+' Height].Filter(x >= [G1 Height Cutoff Value]).Count()/[G1 Threshold],0)')
 		createConnector('','Link', window['G1A'+(j+1)+'A'+(i+1)+'Height'], window['G2A'+(j+1)+'A'+(i+1)+'Perc'])
+		createConnector('','Link', G1Threshold, window['G2A'+(j+1)+'A'+(i+1)+'Perc'])
+		createConnector('','Link', G1Cutoff, window['G2A'+(j+1)+'A'+(i+1)+'Perc'])
+
 	}
 }
 
 
-Gen1 = createPrimitive('Generation 1','Folder',[0,0],[750,675])
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		setParent(window['G1A'+(j+1)+'A'+(i+1)], Gen1)
+		setParent(window['FlowA'+(j+1)+'A'+(i+1)], Gen1)
+		setParent(window['P1A'+(i+1)+'freq'], Gen1)
+		setParent(window['P2A'+(i+1)+'freq'], Gen1)
+		setParent(window['G1A'+(j+1)+'A'+(i+1)+'Height'], Gen1)
+		setParent(window['HeightLinkA'+(j+1)+'A'+(i+1)], Gen1)
+		setParent(window['G1A'+(j+1)+'A'+(i+1)+'Mean'], Gen1)
+		setParent(window['MeanLinkA'+(j+1)+'A'+(i+1)], Gen1)
+		setParent(window['G1A'+(j+1)+'A'+(i+1)+'SD'], Gen1)
+		setParent(window['SDLinkA'+(j+1)+'A'+(i+1)], Gen1)
+		setParent(G1Cutoff, Gen1)
+		setParent(G1Threshold, Gen1)
+		setParent(G1CutPerc, Gen1)
+		setParent(window['G2A'+(j+1)+'A'+(i+1)+'Perc'], Gen1)
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Gen2 = createPrimitive('Generation 2','Folder',[0,800],[750,675])
+
+G2Parents = createPrimitive('G2 Population','Stock',[200,850],[100,50])
+setValue(G2Parents, '[G2 Pop]')
+setNonNegative(G2Parents,true)
+G2pop = createPrimitive('G2 Pop','Variable', [225,900],[50,50])
+setValue(G2pop, 50000)
+setShowSlider(G2pop,true)
+setSliderMax(G2pop,100000)
+setSliderStep(G2pop,1)
+createConnector('Link','Link',G2pop,G2Parents)
+
+
+
+setParent(G2Parents, Gen2)
+setParent(G2pop, Gen2)
+
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		window['G2A'+(j+1)+'A'+(i+1)] = createPrimitive('G2 A'+(j+1)+'A'+(i+1),'Stock',[350,(800+((j+1)*50))+10*(i+1)],[50,50])
+		window['G2FlowA'+(j+1)+'A'+(i+1)] = createConnector('Flow G2 A'+(j+1)+'A'+(i+1),'Flow', G2Parents, window['G2A'+(j+1)+'A'+(i+1)])
+ 	}
+}
+
+
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		createConnector('','Link',G2pop,window['G2FlowA'+(j+1)+'A'+(i+1)])
+	} 
+}
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		createConnector('','Link',window['G2A'+(j+1)+'A'+(i+1)+'Perc'],window['G2FlowA'+(j+1)+'A'+(i+1)])
+	} 
+}
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		setValue(window['G2FlowA'+(j+1)+'A'+(i+1)],'Round([G2 Pop]*[G2 A'+(j+1)+'A'+(i+1)+' Perc])')
+	} 
+}
+
+
+
+
+//create phenotype primitives for all genotypes
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		window['G2A'+(j+1)+'A'+(i+1)+'Height'] = createPrimitive('G2 A'+(j+1)+'A'+(i+1)+' Height','Variable',[400,(800+((j+1)*50))+10*(i+1)],[50,50])
+	}
+}	
+	
+
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+
+		window['G2HeightLinkA'+(j+1)+'A'+(i+1)] = createConnector('','Link', window['G2A'+(j+1)+'A'+(i+1)], window['G2A'+(j+1)+'A'+(i+1)+'Height'])
+	}
+}
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		setValue(window['G2A'+(j+1)+'A'+(i+1)+'Height'],'IfThenElse(Years = 1, Repeat(RandNormal([G2 A'+(j+1)+'A'+(i+1)+' Mean],[G2 A'+(j+1)+'A'+(i+1)+' SD]),[G2 A'+(j+1)+'A'+(i+1)+']), 0)')
+	}
+}
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		window['G2A'+(j+1)+'A'+(i+1)+'Mean'] = createPrimitive('G2 A'+(j+1)+'A'+(i+1)+' Mean','Variable',[450,(800+((j+1)*50))+10*(i+1)],[25,25])
+		setShowSlider(window['G2A'+(j+1)+'A'+(i+1)+'Mean'],true)
+		setSliderMax(window['G2A'+(j+1)+'A'+(i+1)+'Mean'],10)
+		setSliderStep(window['G2A'+(j+1)+'A'+(i+1)+'Mean'],.1)
+		setValue(window['G2A'+(j+1)+'A'+(i+1)+'Mean'],5)
+	}
+}
+
+
+
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		window['G2MeanLinkA'+(j+1)+'A'+(i+1)] = createConnector('', 'Link', window['G2A'+(j+1)+'A'+(i+1)+'Mean'], window['G2A'+(j+1)+'A'+(i+1)+'Height'])
+	}
+}
+
+
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		window['G2A'+(j+1)+'A'+(i+1)+'SD'] = createPrimitive('G2 A'+(j+1)+'A'+(i+1)+' SD','Variable',[450,(j+1)*50+10*(i+1)+825],[25,25])
+		setShowSlider(window['G2A'+(j+1)+'A'+(i+1)+'SD'],true)
+		setSliderMax(window['G2A'+(j+1)+'A'+(i+1)+'SD'],5)
+		setSliderStep(window['G2A'+(j+1)+'A'+(i+1)+'SD'],.1)
+		setValue(window['G2A'+(j+1)+'A'+(i+1)+'SD'],1)
+	}
+}
+
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		window['G2SDLinkA'+(j+1)+'A'+(i+1)] = createConnector('','Link', window['G2A'+(j+1)+'A'+(i+1)+'SD'], window['G2A'+(j+1)+'A'+(i+1)+'Height'])
+	}
+}
+
+
+
+
+G2Cutoff = createPrimitive('G2 Height Cutoff Value','Variable', [550,850], [100,50])
+G2Threshold = createPrimitive('G2 Threshold','Variable', [550,950], [100,50])
+G2CutPerc = createPrimitive('G2 Cutoff Perc','Variable', [550,1050], [100,50])
+
+
+
+var G2AllHeight = [];
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		AllHeight.push('[G2 A'+(j+1)+'A'+(i+1)+' Height]')
+	}
+}
+setValue(G2Cutoff, 'IfThenElse(Years=2,Join('+G2AllHeight+').Sort().Reverse(){[G2 Threshold]},0)')
+
+setValue(G2Threshold, 'Round([G2 Cutoff Perc]*[G2 Pop])') 
+
+
+
+setShowSlider(G2CutPerc,true)
+setSliderMax(G2CutPerc,1)
+setSliderStep(G2CutPerc,.01)
+setValue(G2CutPerc,.1)
+
+
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		createConnector('','Link', window['G2A'+(j+1)+'A'+(i+1)+'Height'], G2Cutoff)
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+createConnector('','Link', G2Threshold, G2Cutoff)
+createConnector('','Link', G2CutPerc, G2Threshold)
+createConnector('','Link', G2pop, G2Threshold)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		window['G3A'+(j+1)+'A'+(i+1)+'Perc'] = createPrimitive('G3 A'+(j+1)+'A'+(i+1)+' Perc','Variable',[650,(j+1)*50+10*(i+1)+800],[50,50])
+		setValue(window['G3A'+(j+1)+'A'+(i+1)+'Perc'],'IfThenElse(Years=2,[G2 A'+(j+1)+'A'+(i+1)+' Height].Filter(x >= [G2 Height Cutoff Value]).Count()/[G2 Threshold],0)')
+		createConnector('','Link', window['G2A'+(j+1)+'A'+(i+1)+'Height'], window['G3A'+(j+1)+'A'+(i+1)+'Perc'])
+		createConnector('','Link', G2Threshold, window['G3A'+(j+1)+'A'+(i+1)+'Perc'])
+		createConnector('','Link', G2Cutoff, window['G3A'+(j+1)+'A'+(i+1)+'Perc'])
+
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+for (j = 0; j < 10; j++) {
+	for (i = 0; i < 10; i++) {
+		setParent(window['G2A'+(j+1)+'A'+(i+1)], Gen2)
+		setParent(window['G2FlowA'+(j+1)+'A'+(i+1)], Gen2)
+		setParent(window['G2A'+(j+1)+'A'+(i+1)+'Height'], Gen2)
+		setParent(window['G2HeightLinkA'+(j+1)+'A'+(i+1)], Gen2)
+		setParent(window['G2A'+(j+1)+'A'+(i+1)+'Mean'], Gen2)
+		setParent(window['G2MeanLinkA'+(j+1)+'A'+(i+1)], Gen2)
+		setParent(window['G2A'+(j+1)+'A'+(i+1)+'SD'], Gen2)
+		setParent(window['G2SDLinkA'+(j+1)+'A'+(i+1)], Gen2)
+		setParent(G2Cutoff, Gen2)
+		setParent(G2Threshold, Gen2)
+		setParent(G2CutPerc, Gen2)
+		setParent(window['G3A'+(j+1)+'A'+(i+1)+'Perc'], Gen2)
+	}
+}
+

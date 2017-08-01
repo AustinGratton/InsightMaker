@@ -1,3 +1,8 @@
+///////////TO RUN
+///////////Go to empty insight, open the console (ctrl+shift+i) and copy and paste this entire code
+///////////Hit enter, it will prompt you for the number of generations and alleles per parent
+///////////With that information it will generate the desired insight
+///////////Still needs: Variables to track for visual output, cleaner code to run faster
 nGenerations = showPrompt('How many generations will there be?')
 nAlleles = showPrompt('How many alleles are being tracked per parent?')
 nGenotypes = nAlleles*nAlleles

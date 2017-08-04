@@ -1,0 +1,51 @@
+var PropVars = []
+PropVars = for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+		console.log("If Years = {0} then [G{0} A{2}A{1}]/[G{0} Pop]".format(1, i+1, j+1));
+		for(k = 2; k <= nGenerations; k++) {
+  console.log("Else if Years = {0} then [G{0} A{2}A{1}]/[G{0} Pop]".format(k, i+1, j+1));
+        }
+    }
+}
+console.log("End if")
+
+
+
+
+
+
+
+
+for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+		window['A'+(j+1)+'A'+(i+1)+'If'] = []
+		for(k = 2; k <= nGenerations; k++) {
+			window['G'+(k)+'A'+(j+1)+'A'+(i+1)+'IfElse'] = []
+
+		}
+		window['A'+(j+1)+'A'+(i+1)+'IfEnd'] = []
+    }
+}
+
+for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+		window['A'+(j+1)+'A'+(i+1)+'If'] = "If Years = {0} then\n[G{0} A{2}A{1}]/[G{0} Pop]\n".format(1, i+1, j+1);
+		for(k = 2; k <= nGenerations; k++) {
+  			window['G'+(k)+'A'+(j+1)+'A'+(i+1)+'IfElse'] = "Else if Years = {0} then\n[G{0} A{2}A{1}]/[G{0} Pop]\n".format(k, i+1, j+1);
+        	}
+		for(k = 2; k <= nGenerations; k++) {
+			window['A'+(j+1)+'A'+(i+1)+'IfElse'] =
+		}
+		window['A'+(j+1)+'A'+(i+1)+'IfEnd'] = "End If"
+	}
+}
+
+
+for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+		window['A'+(j+1)+'A'+(i+1)+'Prop'] = createPrimitive('A'+(j+1)+'A'+(i+1)+' Prop','Stock', [850, ((j+1)*50)+25*(i+1)],[100,50])
+		for(k = 2; k <= nGenerations; k++) {
+			setValue(window['A'+(j+1)+'A'+(i+1)+'Prop'],window['A'+(j+1)+'A'+(i+1)+'If']+window['G'+(k)+'A'+(j+1)+'A'+(i+1)+'IfElse']+window['A'+(j+1)+'A'+(i+1)+'IfEnd'])
+        }
+    }
+}

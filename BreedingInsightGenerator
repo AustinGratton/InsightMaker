@@ -11,9 +11,9 @@ Parents = createPrimitive('Parents','Stock',[200,50],[100,50])
 setValue(Parents, '[G1 Pop]')
 setNonNegative(Parents,true)
 G1pop = createPrimitive('G1 Pop','Variable', [225,100],[50,50])
-setValue(G1pop, 50000)
+setValue(G1pop, 5000)
 setShowSlider(G1pop,true)
-setSliderMax(G1pop,100000)
+setSliderMax(G1pop,10000)
 setSliderStep(G1pop,1)
 createConnector('Link','Link',G1pop,Parents)
 
@@ -63,7 +63,7 @@ for (j = 0; j < nAlleles; j++) {
 for (j = 0; j < nAlleles; j++) {
 	for (i = 0; i < nAlleles; i++) {
 
-		window['HeightLinkA'+(j+1)+'A'+(i+1)] = createConnector('window['A'+(j+1)+'A'+(i+1)+'Prop']','Link', window['G1A'+(j+1)+'A'+(i+1)], window['G1A'+(j+1)+'A'+(i+1)+'Height'])
+		window['HeightLinkA'+(j+1)+'A'+(i+1)] = createConnector('A'+(j+1)+'A'+(i+1)+'Prop','Link', window['G1A'+(j+1)+'A'+(i+1)], window['G1A'+(j+1)+'A'+(i+1)+'Height'])
 	}
 }
 
@@ -167,13 +167,13 @@ for (k = 1; k < nGenerations; k++){
 	window['Bottom'+(k)] = (((nAlleles)*50)+10*(nAlleles)+125)*(k)
 
 	window['Gen'+(k+1)] = createPrimitive('Generation '+(k+1),'Folder',[0,window['Bottom'+(k)]],[750,((nAlleles)*50)+10*(nAlleles)+75])
-	window['G'+(k+1)+'Parents'] = createPrimitive('G'+(k+1)+' Population','Stock',[200,window['Bottom'+(k)]+50],[100,50])
+	window['G'+(k+1)+'Parents'] = createPrimitive('G'+(k+1)+' Pop','Stock',[200,window['Bottom'+(k)]+50],[100,50])
 	setValue(window['G'+(k+1)+'Parents'], '[G'+(k+1)+' Pop]')
 	setNonNegative(window['G'+(k+1)+'Parents'],true)
 	window['G'+(k+1)+'pop'] = createPrimitive('G'+(k+1)+' Pop','Variable', [225,window['Bottom'+(k)]+100],[50,50])
-	setValue(window['G'+(k+1)+'pop'], 50000)
+	setValue(window['G'+(k+1)+'pop'], 5000)
 	setShowSlider(window['G'+(k+1)+'pop'],true)
-	setSliderMax(window['G'+(k+1)+'pop'],100000)
+	setSliderMax(window['G'+(k+1)+'pop'],10000)
 	setSliderStep(window['G'+(k+1)+'pop'],1)
 	createConnector('Link','Link',window['G'+(k+1)+'pop'],window['G'+(k+1)+'Parents'])
 
@@ -232,7 +232,7 @@ for (k = 1; k < nGenerations; k++){
 
 	for (j = 0; j < nAlleles; j++) {
 		for (i = 0; i < nAlleles; i++) {
-			setValue(window['G'+(k+1)+'A'+(j+1)+'A'+(i+1)+'Height'],'IfThenElse(Years = 2, Repeat(RandNormal([G'+(k+1)+' A'+(j+1)+'A'+(i+1)+' Mean],[G'+(k+1)+' A'+(j+1)+'A'+(i+1)+' SD]),[G'+(k+1)+' A'+(j+1)+'A'+(i+1)+']), 0)')
+			setValue(window['G'+(k+1)+'A'+(j+1)+'A'+(i+1)+'Height'],'IfThenElse(Years = '+(k+1)+', Repeat(RandNormal([G'+(k+1)+' A'+(j+1)+'A'+(i+1)+' Mean],[G'+(k+1)+' A'+(j+1)+'A'+(i+1)+' SD]),[G'+(k+1)+' A'+(j+1)+'A'+(i+1)+']), 0)')
 		}
 	}
 
@@ -314,7 +314,7 @@ for (k = 1; k < nGenerations; k++){
 	for (j = 0; j < nAlleles; j++) {
 		for (i = 0; i < nAlleles; i++) {
 			window['G'+(k+2)+'A'+(j+1)+'A'+(i+1)+'Perc'] = createPrimitive('G'+(k+2)+' A'+(j+1)+'A'+(i+1)+' Perc','Variable',[650,(j)*50+10*(i)+window['Bottom'+(k)]-50+100],[50,50])
-			setValue(window['G'+(k+2)+'A'+(j+1)+'A'+(i+1)+'Perc'],'IfThenElse(Years=2,[G'+(k+1)+' A'+(j+1)+'A'+(i+1)+' Height].Filter(x >= [G'+(k+1)+' Height Cutoff Value]).Count()/[G'+(k+1)+' Threshold],0)')
+			setValue(window['G'+(k+2)+'A'+(j+1)+'A'+(i+1)+'Perc'],'IfThenElse(Years='+(k+1)+',[G'+(k+1)+' A'+(j+1)+'A'+(i+1)+' Height].Filter(x >= [G'+(k+1)+' Height Cutoff Value]).Count()/[G'+(k+1)+' Threshold],0)')
 			createConnector('','Link', window['G'+(k+1)+'A'+(j+1)+'A'+(i+1)+'Height'], window['G'+(k+2)+'A'+(j+1)+'A'+(i+1)+'Perc'])
 			createConnector('','Link', window['G'+(k+1)+'Threshold'], window['G'+(k+2)+'A'+(j+1)+'A'+(i+1)+'Perc'])
 			createConnector('','Link', window['G'+(k+1)+'Cutoff'], window['G'+(k+2)+'A'+(j+1)+'A'+(i+1)+'Perc'])
@@ -324,3 +324,94 @@ for (k = 1; k < nGenerations; k++){
 	
 
 }		
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+		window['A'+(j+1)+'A'+(i+1)+'If'] = []
+		for(k = 2; k <= nGenerations; k++) {
+			window['G'+(k)+'A'+(j+1)+'A'+(i+1)+'IfElse'] = []
+
+		}
+		window['A'+(j+1)+'A'+(i+1)+'IfEnd'] = []
+    }
+}
+
+for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+		window['A'+(j+1)+'A'+(i+1)+'If'] = "If Years = {0} then\n[G{0} A{2}A{1}]/[G{0} Pop]\n".format(1, i+1, j+1);
+		for(k = 2; k <= nGenerations; k++) {
+  			window['G'+(k)+'A'+(j+1)+'A'+(i+1)+'IfElse'] = "Else if Years = {0} then\n[G{0} A{2}A{1}]/[G{0} Pop]\n".format(k, i+1, j+1);
+        	}
+		window['A'+(j+1)+'A'+(i+1)+'IfEnd'] = "End If"
+	}
+}
+
+for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+	window['A'+(j+1)+'A'+(i+1)+'IfElse'] = window['G2A'+(j+1)+'A'+(i+1)+'IfElse']
+		for(k = 3; k <= (nGenerations); k++) {
+			window['A'+(j+1)+'A'+(i+1)+'IfElse'] = window['A'+(j+1)+'A'+(i+1)+'IfElse'].concat(window['G'+(k)+'A'+(j+1)+'A'+(i+1)+'IfElse'])
+         }
+     }
+}
+
+
+for (j = 0; j < nAlleles; j++) {
+	for (i = 0; i < nAlleles; i++) {
+		window['A'+(j+1)+'A'+(i+1)+'Prop'] = createPrimitive('A'+(j+1)+'A'+(i+1)+' Prop','Variable', [850, ((j+1)*50)+25*(i+1)],[100,50])
+		for(k = 2; k <= nGenerations; k++) {
+			setValue(window['A'+(j+1)+'A'+(i+1)+'Prop'],window['A'+(j+1)+'A'+(i+1)+'If']+window['A'+(j+1)+'A'+(i+1)+'IfElse']+window['A'+(j+1)+'A'+(i+1)+'IfEnd'])
+        }
+    }
+}
+
+for(k = 1; k <= nGenerations; k++) {
+	for (j = 0; j < nAlleles; j++) {
+		for (i = 0; i < nAlleles; i++) {
+			createConnector('','Link', window['G'+(k)+'A'+(j+1)+'A'+(i+1)], window['A'+(j+1)+'A'+(i+1)+'Prop'])
+		}
+	}
+}
+
+for(k = 1; k <= nGenerations; k++) {
+	for (j = 0; j < nAlleles; j++) {
+		for (i = 0; i < nAlleles; i++) {
+			createConnector('','Link', window['G'+k+'pop'], window['A'+(j+1)+'A'+(i+1)+'Prop'])
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+G1If = 'If Years = 1 then\nJoin('+G1AllHeight+').Mean()\n'
+for(k = 2; k <= nGenerations; k++) {
+  	window['G'+(k)+'IfElse'] = 'Else if Years = '+k+' then\nJoin('+window['G'+(k)+'HeightList']+').Mean()\n'
+}
+
+window['AllIfElse'] = window['G2IfElse']
+for(k = 3; k <= (nGenerations); k++) {
+			window['AllIfElse'] = window['AllIfElse'].concat(window['G'+(k)+'IfElse'])
+}
+
+meanHeights = createPrimitive('Mean Heights','Variable', [950,100], [100,50])
+setValue(meanHeights, G1If+AllIfElse+"End If")
+
+
+for(k = 1; k <= nGenerations; k++) {
+	for (j = 0; j < nAlleles; j++) {
+		for (i = 0; i < nAlleles; i++) {
+			createConnector('','Link', window['G'+k+'A'+(j+1)+'A'+(i+1)+'Height'], meanHeights)
+		}
+	}
+}
